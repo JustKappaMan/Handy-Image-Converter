@@ -15,7 +15,7 @@ dp = Dispatcher(bot)
 
 @dp.message_handler(commands=['start', 'help'])
 async def send_welcome(message: types.Message):
-    await message.reply("Hi!\nI'm HandyImageConverterBot!\nPowered by aiogram.")
+    await message.reply("Hi!\n\nI'm HandyImageConverterBot!\n\nPowered by aiogram.")
 
 
 @dp.message_handler()
