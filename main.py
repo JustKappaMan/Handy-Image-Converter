@@ -1,7 +1,8 @@
 import os
 import logging
 
-from aiogram import Bot, Dispatcher, executor, types
+from aiogram import Bot, Dispatcher, executor
+from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 
 logging.basicConfig(level=logging.INFO)
 
@@ -13,45 +14,45 @@ dp = Dispatcher(bot)
 
 
 @dp.message_handler(commands=['start', 'help'])
-async def send_welcome(message: types.Message):
+async def send_welcome(message: Message):
     await message.reply("Hi!\n\nI'm HandyImageConverterBot!\n\nPowered by aiogram.")
 
 
 @dp.message_handler(content_types=['document'])
-async def handle_image_as_file(message: types.Message):
+async def handle_image_as_file(message: Message):
     if image := message.document:
         match image.mime_type:
             case 'image/avif':
                 await message.answer(
                     'Select the output format',
-                    reply_markup=types.ReplyKeyboardMarkup([[types.KeyboardButton('JPEG'),
-                                                             types.KeyboardButton('PNG'),
-                                                             types.KeyboardButton('WEBP')]],
-                                                           resize_keyboard=True)
+                    reply_markup=ReplyKeyboardMarkup([[KeyboardButton('JPEG'),
+                                                       KeyboardButton('PNG'),
+                                                       KeyboardButton('WEBP')]],
+                                                     resize_keyboard=True)
                 )
             case 'image/jpeg':
                 await message.answer(
                     'Select the output format',
-                    reply_markup=types.ReplyKeyboardMarkup([[types.KeyboardButton('AVIF'),
-                                                             types.KeyboardButton('PNG'),
-                                                             types.KeyboardButton('WEBP')]],
-                                                           resize_keyboard=True)
+                    reply_markup=ReplyKeyboardMarkup([[KeyboardButton('AVIF'),
+                                                       KeyboardButton('PNG'),
+                                                       KeyboardButton('WEBP')]],
+                                                     resize_keyboard=True)
                 )
             case 'image/png':
                 await message.answer(
                     'Select the output format',
-                    reply_markup=types.ReplyKeyboardMarkup([[types.KeyboardButton('AVIF'),
-                                                             types.KeyboardButton('JPEG'),
-                                                             types.KeyboardButton('WEBP')]],
-                                                           resize_keyboard=True)
+                    reply_markup=ReplyKeyboardMarkup([[KeyboardButton('AVIF'),
+                                                       KeyboardButton('JPEG'),
+                                                       KeyboardButton('WEBP')]],
+                                                     resize_keyboard=True)
                 )
             case 'image/webp':
                 await message.answer(
                     'Select the output format',
-                    reply_markup=types.ReplyKeyboardMarkup([[types.KeyboardButton('AVIF'),
-                                                             types.KeyboardButton('JPEG'),
-                                                             types.KeyboardButton('PNG')]],
-                                                           resize_keyboard=True)
+                    reply_markup=ReplyKeyboardMarkup([[KeyboardButton('AVIF'),
+                                                       KeyboardButton('JPEG'),
+                                                       KeyboardButton('PNG')]],
+                                                     resize_keyboard=True)
                 )
             case _:
                 await message.answer(
