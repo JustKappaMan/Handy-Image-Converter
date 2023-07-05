@@ -26,28 +26,32 @@ async def handle_image_as_file(message: types.Message):
                     'Select the output format',
                     reply_markup=types.ReplyKeyboardMarkup([[types.KeyboardButton('JPEG'),
                                                              types.KeyboardButton('PNG'),
-                                                             types.KeyboardButton('WEBP')]])
+                                                             types.KeyboardButton('WEBP')]],
+                                                           resize_keyboard=True)
                 )
             case 'image/jpeg':
                 await message.answer(
                     'Select the output format',
                     reply_markup=types.ReplyKeyboardMarkup([[types.KeyboardButton('AVIF'),
                                                              types.KeyboardButton('PNG'),
-                                                             types.KeyboardButton('WEBP')]])
+                                                             types.KeyboardButton('WEBP')]],
+                                                           resize_keyboard=True)
                 )
             case 'image/png':
                 await message.answer(
                     'Select the output format',
                     reply_markup=types.ReplyKeyboardMarkup([[types.KeyboardButton('AVIF'),
                                                              types.KeyboardButton('JPEG'),
-                                                             types.KeyboardButton('WEBP')]])
+                                                             types.KeyboardButton('WEBP')]],
+                                                           resize_keyboard=True)
                 )
             case 'image/webp':
                 await message.answer(
                     'Select the output format',
                     reply_markup=types.ReplyKeyboardMarkup([[types.KeyboardButton('AVIF'),
                                                              types.KeyboardButton('JPEG'),
-                                                             types.KeyboardButton('PNG')]])
+                                                             types.KeyboardButton('PNG')]],
+                                                           resize_keyboard=True)
                 )
             case _:
                 await message.answer(
