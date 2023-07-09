@@ -68,7 +68,10 @@ async def send_image_as_file(message: Message, state: FSMContext):
         old_img_path = Path((await state.get_data())['file_path'])
         new_img_path = old_img_path.with_suffix(f'.{message.text}')
 
+        # JPG->PNG and vice versa conversions
         with Image.open(old_img_path) as old_img:
+            if old_img.mode != 'RGB':
+                old_img = old_img.convert('RGB')
             old_img.save(new_img_path)
 
         await message.answer_document(InputFile(new_img_path, filename=new_img_path.name),
