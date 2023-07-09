@@ -30,7 +30,7 @@ mime_types_and_keyboards = {
                                       resize_keyboard=True)
 }
 
-supported_formats = {'AVIF', 'JPEG', 'PNG', 'WEBP'}
+supported_formats = {'avif', 'jpeg', 'png', 'webp'}
 
 
 class ImageInfo(StatesGroup):
@@ -47,6 +47,7 @@ async def send_welcome(message: Message):
 async def handle_image_as_file(message: Message, state: FSMContext):
     if image := message.document:
         if image.mime_type in mime_types_and_keyboards:
+            image.file_name = image.file_name.lower()
             await image.download(image.file_name)
             await state.update_data(file_path=image.file_name)
 
@@ -64,9 +65,15 @@ async def handle_image_as_file(message: Message, state: FSMContext):
 
 @dp.message_handler(state=ImageInfo.output_format)
 async def send_image_as_file(message: Message, state: FSMContext):
+    message.text = message.text.lower()
+
     if message.text in supported_formats:
         old_img_path = Path((await state.get_data())['file_path'])
         new_img_path = old_img_path.with_suffix(f'.{message.text}')
+
+        if old_img_path.suffix == new_img_path.suffix:
+            await message.answer('Error! The image is already in this format!', reply_markup=ReplyKeyboardRemove())
+            return
 
         # JPG->PNG and vice versa conversions
         with Image.open(old_img_path) as old_img:
@@ -81,8 +88,6 @@ async def send_image_as_file(message: Message, state: FSMContext):
             'Error! Unsupported image format!\n\n'
             'I support only AVIF/JPEG/PNG/WEBP images at the moment.',
             reply_markup=ReplyKeyboardRemove())
-
-    await state.finish()
 
 
 if __name__ == '__main__':
