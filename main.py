@@ -68,7 +68,9 @@ async def send_image_as_file(message: Message, state: FSMContext):
     message.text = message.text.lower()
 
     if message.text in supported_formats:
-        old_img_path = Path((await state.get_data())['file_path'])
+        if (old_img_path := Path((await state.get_data())['file_path'])).suffix == '.jpg':
+            old_img_path = old_img_path.with_suffix('.jpeg')
+
         new_img_path = old_img_path.with_suffix(f'.{message.text}')
 
         if old_img_path.suffix == new_img_path.suffix:
