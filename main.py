@@ -76,6 +76,7 @@ async def send_image_as_file(message: Message, state: FSMContext):
 
         if old_img_path.suffix == new_img_path.suffix:
             await message.answer('Error! The image is already in this format!', reply_markup=ReplyKeyboardRemove())
+            await state.finish()
             return
 
         # JPG->PNG and vice versa conversions
@@ -91,6 +92,8 @@ async def send_image_as_file(message: Message, state: FSMContext):
             'Error! Unsupported image format!\n\n'
             'I support only AVIF/JPEG/PNG/WEBP images at the moment.',
             reply_markup=ReplyKeyboardRemove())
+
+    await state.finish()
 
 
 if __name__ == '__main__':
