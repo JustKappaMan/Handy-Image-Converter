@@ -41,16 +41,20 @@ class ImageInfo(StatesGroup):
 
 @dp.message_handler(commands=['start', 'help'])
 async def send_welcome(message: Message):
-    await message.reply("Hi!\n\nI'm HandyImageConverterBot!\n\nPowered by aiogram.")
+    await message.answer("Hi! I'm [HandyImageConverterBot](https://t.me/HandyImageConverterBot).\n\n"
+                         "Just send me any image *as file* ☺️",
+                         parse_mode='Markdown')
 
 
 @dp.message_handler(content_types=['document'])
 async def handle_image_as_file(message: Message, state: FSMContext):
     if image := message.document:
         if image.mime_type in mime_types_and_keyboards:
-            image.file_name = image.file_name.lower()
-            await image.download(destination_file=image.file_name)
-            await state.update_data(file_path=image.file_name)
+            if (file_path := Path(image.file_name.lower())).suffix == '.jpg':
+                file_path = file_path.with_suffix('.jpeg')
+
+            await image.download(destination_file=file_path)
+            await state.update_data(file_path=file_path)
 
             await ImageInfo.output_format.set()
             await message.answer(
@@ -69,9 +73,7 @@ async def send_image_as_file(message: Message, state: FSMContext):
     message.text = message.text.lower()
 
     if message.text in supported_formats:
-        if (old_img_path := Path((await state.get_data())['file_path'])).suffix == '.jpg':
-            old_img_path = old_img_path.with_suffix('.jpeg')
-
+        old_img_path = (await state.get_data())['file_path']
         new_img_path = old_img_path.with_suffix(f'.{message.text}')
 
         if old_img_path.suffix == new_img_path.suffix:
