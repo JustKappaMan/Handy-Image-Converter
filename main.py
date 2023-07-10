@@ -1,19 +1,19 @@
-import os
 import logging
+from os import getenv
 from pathlib import Path
 
 from aiogram import Bot, Dispatcher, executor
-from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, InputFile
-from aiogram.dispatcher import FSMContext
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
+from aiogram.types import Message, InputFile, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 
 from PIL import Image
 import pillow_avif
 
 logging.basicConfig(level=logging.INFO)
 
-if (TOKEN := os.getenv('HANDY_IMAGE_CONVERTER_TOKEN')) is None:
+if (TOKEN := getenv('HANDY_IMAGE_CONVERTER_TOKEN')) is None:
     raise ValueError('Error! Assign your Telegram bot token to HANDY_IMAGE_CONVERTER_TOKEN system variable.')
 
 bot = Bot(token=TOKEN)
@@ -79,7 +79,7 @@ async def send_image_as_file(message: Message, state: FSMContext):
             await state.finish()
             return
 
-        # JPG->PNG and vice versa conversions
+        # JPG, PNG and AVIF conversions
         with Image.open(old_img_path) as old_img:
             if old_img.mode != 'RGB':
                 old_img = old_img.convert('RGB')
