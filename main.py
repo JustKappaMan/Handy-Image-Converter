@@ -79,7 +79,6 @@ async def send_image_as_file(message: Message, state: FSMContext):
             await state.finish()
             return
 
-        # JPG, PNG and AVIF conversions
         with Image.open(old_img_path) as old_img:
             if old_img.mode != 'RGB':
                 old_img = old_img.convert('RGB')
