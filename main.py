@@ -39,12 +39,22 @@ class ImageInfo(StatesGroup):
     output_format = State()
 
 
-@dp.message_handler(commands=['start', 'help'])
+@dp.message_handler(commands=['start'])
 async def send_welcome(message: Message):
     await message.answer(
         'Hi! I\'m [HandyImageConverterBot](https://t.me/HandyImageConverterBot).\n\n'
         'Just send me any image *as file* ☺️',
         parse_mode='Markdown'
+    )
+
+
+@dp.message_handler(commands=['help'])
+async def send_welcome(message: Message):
+    await message.answer(
+        '👨‍💻 [Author](https://t.me/SuspiciousUser)\n'
+        '🤖 [Source code](https://github.com/JustKappaMan/Handy-Image-Converter)',
+        parse_mode='Markdown',
+        disable_web_page_preview=True
     )
 
 
