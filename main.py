@@ -41,9 +41,11 @@ class ImageInfo(StatesGroup):
 
 @dp.message_handler(commands=['start', 'help'])
 async def send_welcome(message: Message):
-    await message.answer("Hi! I'm [HandyImageConverterBot](https://t.me/HandyImageConverterBot).\n\n"
-                         "Just send me any image *as file* ☺️",
-                         parse_mode='Markdown')
+    await message.answer(
+        'Hi! I\'m [HandyImageConverterBot](https://t.me/HandyImageConverterBot).\n\n'
+        'Just send me any image *as file* ☺️',
+        parse_mode='Markdown'
+    )
 
 
 @dp.message_handler(content_types=['document'])
@@ -57,14 +59,11 @@ async def handle_image_as_file(message: Message, state: FSMContext):
             await state.update_data(file_path=file_path)
 
             await ImageInfo.output_format.set()
-            await message.answer(
-                'Select the output format',
-                reply_markup=mime_types_and_keyboards[image.mime_type]
-            )
+            await message.answer('Select the output format', reply_markup=mime_types_and_keyboards[image.mime_type])
         else:
             await message.answer(
-                'Error! Unsupported image format!\n\n'
-                'I support only AVIF/JPEG/PNG/WEBP images at the moment.'
+                'Error! Unsupported image format.\n\n'
+                'I support only AVIF/JPEG/PNG/WEBP images at the moment 😔'
             )
 
 
@@ -77,7 +76,7 @@ async def send_image_as_file(message: Message, state: FSMContext):
         new_img_path = old_img_path.with_suffix(f'.{message.text}')
 
         if old_img_path.suffix == new_img_path.suffix:
-            await message.answer('Error! The image is already in this format!', reply_markup=ReplyKeyboardRemove())
+            await message.answer('Error! The image is already in this format 🤔', reply_markup=ReplyKeyboardRemove())
             await state.finish()
             return
 
@@ -86,13 +85,16 @@ async def send_image_as_file(message: Message, state: FSMContext):
                 old_img = old_img.convert('RGB')
             old_img.save(new_img_path)
 
-        await message.answer_document(InputFile(new_img_path, filename=new_img_path.name),
-                                      reply_markup=ReplyKeyboardRemove())
+        await message.answer_document(
+            InputFile(new_img_path, filename=new_img_path.name),
+            reply_markup=ReplyKeyboardRemove()
+        )
     else:
         await message.answer(
-            'Error! Unsupported image format!\n\n'
-            'I support only AVIF/JPEG/PNG/WEBP images at the moment.',
-            reply_markup=ReplyKeyboardRemove())
+            'Error! Unsupported image format.\n\n'
+            'I support only AVIF/JPEG/PNG/WEBP images at the moment 😔',
+            reply_markup=ReplyKeyboardRemove()
+        )
 
     await state.finish()
 
