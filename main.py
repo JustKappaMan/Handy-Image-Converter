@@ -49,7 +49,7 @@ async def handle_image_as_file(message: Message, state: FSMContext):
     if image := message.document:
         if image.mime_type in mime_types_and_keyboards:
             image.file_name = image.file_name.lower()
-            await image.download(image.file_name)
+            await image.download(destination_file=image.file_name)
             await state.update_data(file_path=image.file_name)
 
             await ImageInfo.output_format.set()
