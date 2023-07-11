@@ -85,21 +85,21 @@ async def send_image_as_file(message: Message, state: FSMContext):
 
     if message.text in supported_formats:
         image_info = await state.get_data()
-        old_img_path = image_info['temporary_copy_path']
-        new_img_path = old_img_path.with_suffix(f'.{message.text}')
+        old_path = image_info['temporary_copy_path']
+        new_path = old_path.with_suffix(f'.{message.text}')
 
-        if old_img_path.suffix == new_img_path.suffix:
+        if old_path.suffix == new_path.suffix:
             await message.answer('Error! The image is already in this format 🤔', reply_markup=ReplyKeyboardRemove())
             await state.finish()
             return
 
-        with Image.open(old_img_path) as old_img:
+        with Image.open(old_path) as old_img:
             if old_img.mode != 'RGB':
                 old_img = old_img.convert('RGB')
-            old_img.save(new_img_path)
+            old_img.save(new_path)
 
         await message.answer_document(
-            InputFile(new_img_path, filename=f'{image_info["original_name"]}{new_img_path.suffix}'),
+            InputFile(new_path, filename=f'{image_info["original_name"]}{new_path.suffix}'),
             reply_markup=ReplyKeyboardRemove()
         )
     else:
