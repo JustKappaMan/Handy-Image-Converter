@@ -63,7 +63,7 @@ async def send_help(message: Message):
 async def handle_image_as_file(message: Message, state: FSMContext):
     if image := message.document:
         if image.mime_type in mime_types_and_keyboards:
-            if (file_path := pathlib.Path(image.file_name.lower())).suffix == '.jpg':
+            if (file_path := pathlib.Path('images', image.file_name.lower())).suffix == '.jpg':
                 file_path = file_path.with_suffix('.jpeg')
 
             await image.download(destination_file=file_path)
