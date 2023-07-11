@@ -1,4 +1,5 @@
 import os
+import uuid
 import logging
 import pathlib
 
@@ -32,11 +33,12 @@ mime_types_and_keyboards = {
                                       resize_keyboard=True)
 }
 
-supported_formats = {'avif', 'jpeg', 'png', 'webp'}
+supported_formats = {'avif', 'jpg', 'jpeg', 'png', 'webp'}
 
 
 class ImageInfo(StatesGroup):
-    file_path = State()
+    original_name = State()
+    temporary_copy_path = State()
     output_format = State()
 
 
@@ -63,11 +65,10 @@ async def send_help(message: Message):
 async def handle_image_as_file(message: Message, state: FSMContext):
     if image := message.document:
         if image.mime_type in mime_types_and_keyboards:
-            if (file_path := pathlib.Path('images', image.file_name.lower())).suffix == '.jpg':
-                file_path = file_path.with_suffix('.jpeg')
-
-            await image.download(destination_file=file_path)
-            await state.update_data(file_path=file_path)
+            name, extension = image.file_name.rsplit('.', 1)
+            tmp_copy_path = pathlib.Path('images', f'{uuid.uuid4().hex}.{extension}')
+            await image.download(destination_file=tmp_copy_path)
+            await state.update_data(original_name=name, temporary_copy_path=tmp_copy_path)
 
             await ImageInfo.output_format.set()
             await message.answer('Select the output format', reply_markup=mime_types_and_keyboards[image.mime_type])
@@ -83,7 +84,8 @@ async def send_image_as_file(message: Message, state: FSMContext):
     message.text = message.text.lower()
 
     if message.text in supported_formats:
-        old_img_path = (await state.get_data())['file_path']
+        image_info = await state.get_data()
+        old_img_path = image_info['temporary_copy_path']
         new_img_path = old_img_path.with_suffix(f'.{message.text}')
 
         if old_img_path.suffix == new_img_path.suffix:
@@ -97,7 +99,7 @@ async def send_image_as_file(message: Message, state: FSMContext):
             old_img.save(new_img_path)
 
         await message.answer_document(
-            InputFile(new_img_path, filename=new_img_path.name),
+            InputFile(new_img_path, filename=f'{image_info["original_name"]}{new_img_path.suffix}'),
             reply_markup=ReplyKeyboardRemove()
         )
     else:
