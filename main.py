@@ -49,7 +49,7 @@ async def send_welcome(message: Message):
 
 
 @dp.message_handler(commands=['help'])
-async def send_welcome(message: Message):
+async def send_help(message: Message):
     await message.answer(
         '👨‍💻 [Author](https://t.me/SuspiciousUser)\n'
         '🤖 [Source code](https://github.com/JustKappaMan/Handy-Image-Converter)',
