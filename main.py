@@ -22,6 +22,8 @@ bot = Bot(token=TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 
+supported_formats = {'avif', 'jpg', 'jpeg', 'png', 'webp'}
+
 mime_types_and_keyboards = {
     'image/avif': ReplyKeyboardMarkup([[KeyboardButton('JPEG'), KeyboardButton('PNG'), KeyboardButton('WEBP')]],
                                       resize_keyboard=True),
@@ -32,8 +34,6 @@ mime_types_and_keyboards = {
     'image/webp': ReplyKeyboardMarkup([[KeyboardButton('AVIF'), KeyboardButton('JPEG'), KeyboardButton('PNG')]],
                                       resize_keyboard=True)
 }
-
-supported_formats = {'avif', 'jpg', 'jpeg', 'png', 'webp'}
 
 
 class ImageInfo(StatesGroup):
