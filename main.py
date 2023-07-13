@@ -62,6 +62,11 @@ async def send_help(message: Message):
     )
 
 
+@dp.message_handler(content_types=['photo'])
+async def handle_image_as_image(message: Message):
+    await message.answer('Please, send images *as files* 🙂', parse_mode='Markdown')
+
+
 @dp.message_handler(content_types=['document'])
 async def handle_image_as_file(message: Message, state: FSMContext):
     if image := message.document:
