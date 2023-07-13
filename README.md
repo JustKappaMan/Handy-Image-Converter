@@ -6,4 +6,6 @@ Telegram bot to convert AVIF/JPEG/PNG/WEBP images.
 ## License
 This project is licensed under the MIT License.
 ## Credits
-Thanks to [JetBrains](https://www.jetbrains.com/community/opensource) for Open Source development license.
+Big thanks to:
+* [JetBrains](https://www.jetbrains.com/community/opensource) for Open Source development license.
+* [Anggara](https://www.flaticon.com/ru/authors/anggara) for the [botpic](https://www.flaticon.com/ru/free-icon/image_7184176)
