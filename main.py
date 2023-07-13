@@ -63,12 +63,12 @@ async def send_help(message: Message):
 
 
 @dp.message_handler(content_types=['photo'])
-async def handle_image_as_image(message: Message):
+async def handle_compressed_image(message: Message):
     await message.answer('Please, send images *as files* 🙂', parse_mode='Markdown')
 
 
 @dp.message_handler(content_types=['document'])
-async def handle_image_as_file(message: Message, state: FSMContext):
+async def handle_uncompressed_image(message: Message, state: FSMContext):
     if image := message.document:
         if image.mime_type in mime_types_and_keyboards:
             name, extension = image.file_name.rsplit('.', 1)
@@ -86,7 +86,7 @@ async def handle_image_as_file(message: Message, state: FSMContext):
 
 
 @dp.message_handler(state=ImageInfo.output_format)
-async def send_image_as_file(message: Message, state: FSMContext):
+async def send_image_back(message: Message, state: FSMContext):
     message.text = message.text.lower()
 
     if message.text in supported_formats:
