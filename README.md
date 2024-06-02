@@ -5,7 +5,6 @@
 Telegram bot to convert AVIF/JPEG/PNG/WEBP images.
 
 ## Credits
-* [JetBrains](https://www.jetbrains.com) for [Open Source Development license](https://www.jetbrains.com/community/opensource)
 * [Anggara](https://www.flaticon.com/ru/authors/anggara) for the [botpic](https://www.flaticon.com/ru/free-icon/image_7184176)
 
 ## License
