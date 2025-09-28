@@ -50,8 +50,7 @@ class ImageInfo(StatesGroup):
 @dp.message_handler(commands=["start"])
 async def send_welcome(message: Message):
     await message.answer(
-        "Hi! I'm [HandyImageConverterBot](https://t.me/HandyImageConverterBot).\n\n"
-        "Just send me any image *as file* ☺️",
+        "Hi! I'm [HandyImageConverterBot](https://t.me/HandyImageConverterBot).\n\nJust send me any image *as file* ☺️",
         parse_mode="Markdown",
     )
 
@@ -85,7 +84,7 @@ async def handle_uncompressed_image(message: Message, state: FSMContext):
             await message.answer("Select the output format", reply_markup=mime_types_and_keyboards[image.mime_type])
         else:
             await message.answer(
-                "Error! Unsupported image format.\n\n" "I support only AVIF/JPEG/PNG/WEBP images at the moment 😔"
+                "Error! Unsupported image format.\n\nI support only AVIF/JPEG/PNG/WEBP images at the moment 😔"
             )
 
 
@@ -109,12 +108,12 @@ async def send_image_back(message: Message, state: FSMContext):
             old_img.save(new_path)
 
         await message.answer_document(
-            InputFile(new_path, filename=f'{image_info["original_name"]}{new_path.suffix}'),
+            InputFile(new_path, filename=f"{image_info['original_name']}{new_path.suffix}"),
             reply_markup=ReplyKeyboardRemove(),
         )
     else:
         await message.answer(
-            "Error! Unsupported image format.\n\n" "I support only AVIF/JPEG/PNG/WEBP images at the moment 😔",
+            "Error! Unsupported image format.\n\nI support only AVIF/JPEG/PNG/WEBP images at the moment 😔",
             reply_markup=ReplyKeyboardRemove(),
         )
 
