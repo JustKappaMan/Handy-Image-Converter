@@ -1,6 +1,6 @@
 # Handy Image Converter
 ![MIT License](https://img.shields.io/github/license/JustKappaMan/Handy-Image-Converter)
-![Code style: black](https://img.shields.io/badge/code%20style-black-black)
+![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)
 
 Telegram bot to convert AVIF/JPEG/PNG/WEBP images.
 
