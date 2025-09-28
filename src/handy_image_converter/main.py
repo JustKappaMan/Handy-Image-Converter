@@ -3,7 +3,7 @@ import uuid
 import logging
 import pathlib
 
-from aiogram import Bot, Dispatcher, executor
+from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
@@ -118,7 +118,3 @@ async def send_image_back(message: Message, state: FSMContext):
         )
 
     await state.finish()
-
-
-if __name__ == "__main__":
-    executor.start_polling(dp, skip_updates=True)
