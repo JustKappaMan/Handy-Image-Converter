@@ -4,6 +4,9 @@
 
 Telegram bot to convert AVIF/JPEG/PNG/WEBP images.
 
+## Usage
+`uv sync && uv run handy-image-converter`
+
 ## Credits
 * [Anggara](https://www.flaticon.com/ru/authors/anggara) for the [botpic](https://www.flaticon.com/ru/free-icon/image_7184176)
 
