@@ -11,8 +11,6 @@ from aiogram.types import Message, InputFile, KeyboardButton, ReplyKeyboardMarku
 
 from PIL import Image
 
-# noinspection PyUnresolvedReferences
-import pillow_avif
 
 logging.basicConfig(level=logging.INFO)
 
