@@ -1,13 +1,13 @@
 import uuid
 
 from aiogram.dispatcher import FSMContext
-from aiogram.types import Message, InputFile, ReplyKeyboardRemove
+from aiogram.types import InputFile, Message, ReplyKeyboardRemove
 from PIL import Image
 
-from handy_image_converter.loader import dp
-from handy_image_converter.states import ImageInfo
 from handy_image_converter.config import IMAGES_DIR, SUPPORTED_FORMATS
 from handy_image_converter.keyboards import mime_types_and_keyboards
+from handy_image_converter.loader import dp
+from handy_image_converter.states import ImageInfo
 
 
 @dp.message_handler(commands=["start"])
@@ -47,7 +47,7 @@ async def handle_uncompressed_image(message: Message, state: FSMContext):
             await message.answer("Select the output format", reply_markup=mime_types_and_keyboards[image.mime_type])
         else:
             await message.answer(
-                "Error! Unsupported image format.\n\nI support only AVIF/JPEG/PNG/WEBP images at the moment 😔"
+                "Error! Unsupported image format.\n\nI support only AVIF/JPEG/PNG/WEBP images at the moment 😔",
             )
 
 

@@ -2,7 +2,7 @@ import logging
 
 from aiogram import executor
 
-from handy_image_converter import handlers
+from handy_image_converter import handlers  # noqa: F401
 from handy_image_converter.loader import dp
 
 

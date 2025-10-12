@@ -1,7 +1,6 @@
 import os
 import pathlib
 
-
 if (TOKEN := os.getenv("HANDY_IMAGE_CONVERTER_TOKEN")) is None:
     raise ValueError("HANDY_IMAGE_CONVERTER_TOKEN not found!")
 
