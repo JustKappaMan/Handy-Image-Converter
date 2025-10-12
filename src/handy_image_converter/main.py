@@ -6,7 +6,7 @@ from handy_image_converter import handlers  # noqa: F401
 from handy_image_converter.loader import dp
 
 
-def main():
+def main() -> None:
     logging.basicConfig(level=logging.INFO)
     executor.start_polling(dp, skip_updates=True)
 

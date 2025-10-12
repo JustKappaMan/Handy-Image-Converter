@@ -11,7 +11,7 @@ from handy_image_converter.states import ImageInfo
 
 
 @dp.message_handler(commands=["start"])
-async def send_welcome(message: Message):
+async def send_welcome(message: Message) -> None:
     await message.answer(
         "Hi! I'm [HandyImageConverterBot](https://t.me/HandyImageConverterBot).\n\nJust send me any image *as file* ☺️",
         parse_mode="Markdown",
@@ -19,7 +19,7 @@ async def send_welcome(message: Message):
 
 
 @dp.message_handler(commands=["help"])
-async def send_help(message: Message):
+async def send_help(message: Message) -> None:
     await message.answer(
         "Just send me any image *as file* ☺️\n\n"
         "👨‍💻 [Author](https://t.me/SuspiciousUser)\n"
@@ -30,12 +30,12 @@ async def send_help(message: Message):
 
 
 @dp.message_handler(content_types=["photo"])
-async def handle_compressed_image(message: Message):
+async def handle_compressed_image(message: Message) -> None:
     await message.answer("Please, send images *as files* 🙂", parse_mode="Markdown")
 
 
 @dp.message_handler(content_types=["document"])
-async def handle_uncompressed_image(message: Message, state: FSMContext):
+async def handle_uncompressed_image(message: Message, state: FSMContext) -> None:
     if image := message.document:
         if image.mime_type in mime_types_and_keyboards:
             name, extension = image.file_name.rsplit(".", 1)
@@ -52,23 +52,20 @@ async def handle_uncompressed_image(message: Message, state: FSMContext):
 
 
 @dp.message_handler(state=ImageInfo.output_format)
-async def send_image_back(message: Message, state: FSMContext):
-    message.text = message.text.lower()
-
-    if message.text in SUPPORTED_FORMATS:
+async def send_image_back(message: Message, state: FSMContext) -> None:
+    if (fmt := message.text.lower()) in SUPPORTED_FORMATS:
         image_info = await state.get_data()
         old_path = image_info["temporary_copy_path"]
-        new_path = old_path.with_suffix(f".{message.text}")
+        new_path = old_path.with_suffix(f".{fmt}")
 
         if old_path.suffix == new_path.suffix:
             await message.answer("Error! The image is already in this format 🤔", reply_markup=ReplyKeyboardRemove())
             await state.finish()
             return
 
-        with Image.open(old_path) as old_img:
-            if old_img.mode != "RGB":
-                old_img = old_img.convert("RGB")
-            old_img.save(new_path)
+        with Image.open(old_path) as f:
+            img = f.convert("RGB") if f.mode != "RGB" else f
+            img.save(new_path)
 
         await message.answer_document(
             InputFile(new_path, filename=f"{image_info['original_name']}{new_path.suffix}"),
